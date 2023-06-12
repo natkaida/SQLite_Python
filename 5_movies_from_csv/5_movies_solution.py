@@ -25,7 +25,7 @@ conn = sqlite3.connect('mymovies.db')
 # выпущенных после 1999 года
 query = '''SELECT *
            FROM movies
-           WHERE Рейтинг > 8.0 AND Год > 1999'''
+           WHERE Рейтинг > 8.5 AND Год > 1999'''
 
 # Выполнение запроса и вывод результатов
 for row in conn.execute(query):

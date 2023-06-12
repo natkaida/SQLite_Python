@@ -4,8 +4,8 @@ import sqlite3
 conn = sqlite3.connect('clothing.db')
 
 # создание таблицы t_shirts
-conn.execute('''CREATE TABLE IF NOT EXISTS t_shirts
-                (id INTEGER PRIMARY KEY AUTOINCREMENT,
+conn.execute('''CREATE TABLE t_shirts
+                (id INTEGER PRIMARY KEY,
                  бренд TEXT,
                  размер TEXT,
                  цена REAL,

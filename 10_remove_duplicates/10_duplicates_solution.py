@@ -26,21 +26,16 @@ if duplicates:
 
         # Удаляем дубликаты со значением не начинающимся на заглавную букву
         cursor.execute('''
-            DELETE FROM items WHERE ROWID IN (
-                SELECT i1.ROWID
-                FROM items i1 JOIN items i2 ON (
-                    LOWER(i1.brand) = LOWER(i2.brand) AND
-                    LOWER(i1.model) = LOWER(i2.model) AND
-                    LOWER(i1.color) = LOWER(i2.color) AND
-                    i1.engine_volume == i2.engine_volume AND
-                    i1.max_speed == i2.max_speed AND
-                    i1.price == i2.price AND
-                    i1.ROWID != i2.ROWID AND
-                    (i1.brand != UPPER(i1.brand) OR i1.model != UPPER(i1.model) OR i1.color != UPPER(i1.color))
-                )
+            DELETE FROM items WHERE id NOT IN (
+                SELECT id FROM (
+                    SELECT id, ROW_NUMBER() OVER (
+                        PARTITION BY LOWER(brand), LOWER(model), color, engine_volume, max_speed, price
+                        ORDER BY id
+                    ) row_number
+                    FROM items
+                ) WHERE row_number = 1 or (row_number = 2 and brand = LOWER(brand) and model = LOWER(model))
             )
         ''')
-
         # Сохраняем изменения в базе данных
         con.commit()
         print('Дубликаты удалены')

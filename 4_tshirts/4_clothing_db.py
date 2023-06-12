@@ -41,14 +41,4 @@ conn.executemany("INSERT INTO t_shirts (бренд, размер, цена, цв
 # сохранение изменений в базе данных
 conn.commit()
 
-# подключение к базе данных
-conn = sqlite3.connect('clothing.db')
-
-# выборка данных из таблицы t_shirts по условию
-cursor = conn.execute("SELECT * FROM t_shirts WHERE цена < ? AND цвет != ?", (100, 'красный'))
-
-# вывод результатов выборки
-for row in cursor:
-    print(f"{row[0]} - {row[1]}, {row[2]}, ${row[3]}, {row[4]}")
-
 conn.close()
